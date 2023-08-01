@@ -5,10 +5,12 @@ class User < ApplicationRecord
   validates :password, { presence: true, length: { minimum: 6 } }
   validate  :email_validity_check
 
+  has_one :money_account
+
   private
 
   def email_validity_check
-    unless email.match /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    unless email.match /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
       errors.add(:email, "This does not appear to be a valid email")
     end
   end

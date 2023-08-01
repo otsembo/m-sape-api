@@ -1,7 +1,12 @@
+require_relative '../../lib/auth/m_sape'
+
 class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_missing
-  # rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
+  rescue_from JWT::DecodeError, JWT::ExpiredSignature, JWT::EncodeError, with: :jwt_error
 
+  def initialize
+    @auth = Authentication.new
+  end
 
   def home
     app_response(body: 'Welcome to m-sape', status: 200, message: 'success' )
@@ -22,13 +27,28 @@ class ApplicationController < ActionController::API
   end
 
   def invalid_record(data)
-    app_response(body: { errors: data.errors }, status: 403, message: 'Invalid data')
+    app_response(body: { errors: data.errors }, status: 422, message: 'Invalid data')
+  end
+
+  # auth pre-request
+  def auth_request
+    headers = request.headers['Authorization']
+    token = headers ? headers.split(' ').last : nil
+    unless token && @auth.jwt_decode(token: token)
+      app_response(body: { errors: ['You are not authorized to view this page. Check your authorization header and try again'] },
+                   status: 403,
+                   message: 'failed')
+    end
   end
 
   private
 
   def record_missing(e)
     not_found(body: e, message: 'Record not found')
+  end
+
+  def jwt_error(e)
+    app_response(body: e, message: 'Authorization error', status: 403)
   end
 
 end

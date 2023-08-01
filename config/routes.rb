@@ -7,4 +7,8 @@ Rails.application.routes.draw do
   post "/auth/create_account", to: 'auth#register'
   post "/auth/login", to: 'auth#login'
 
+  # account
+  post "/account/view", to: 'account#index'
+
+
 end

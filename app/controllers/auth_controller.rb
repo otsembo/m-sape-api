@@ -1,11 +1,13 @@
 require_relative '../../lib/repository/user_repo'
 require_relative '../../lib/auth/m_sape'
 require_relative '../../lib/app_error'
+require_relative '../../lib/repository/account_repo'
 
 class AuthController < ApplicationController
 
   def initialize
     @user_repo = UserRepo.new
+    @account_repo = AccountRepo.new
     @auth = Authentication.new
   end
 
@@ -27,8 +29,10 @@ class AuthController < ApplicationController
       phone: auth_params[:phone]
     )
     if data.valid?
+      @account_repo.create(data) # create a new money account
       token = @auth.jwt_encode(payload: { uid: data.id })
       app_response(body: { auth: token }, message: 'created account successfully', status: 201)
+      return
     end
     invalid_record(data)
   end
