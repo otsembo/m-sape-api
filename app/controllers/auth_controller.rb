@@ -1,5 +1,6 @@
 require_relative '../../lib/repository/user_repo'
 require_relative '../../lib/auth/m_sape'
+require_relative '../../lib/app_error'
 
 class AuthController < ApplicationController
 
@@ -9,7 +10,14 @@ class AuthController < ApplicationController
   end
 
   def login
-
+    data = @user_repo.search_user(email:auth_params[:email])
+    unless data
+      invalid_record( AppError.new("that user does not exist") )
+      return
+    end
+    @user_repo.login(user:data, password: auth_params[:password]) ?
+      app_response(body: { auth: @auth.jwt_encode(payload: { uid: data.id }) }, message: "", status: 200) :
+      invalid_record( AppError.new("that password is incorrect") )
   end
 
   def register
@@ -21,9 +29,8 @@ class AuthController < ApplicationController
     if data.valid?
       token = @auth.jwt_encode(payload: { uid: data.id })
       app_response(body: { auth: token }, message: 'created account successfully', status: 201)
-    else
-      app_response(body: { errors: data.errors }, message: 'failed', status: 403)
     end
+    invalid_record(data)
   end
 
   private

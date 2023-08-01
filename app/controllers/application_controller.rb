@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   def app_response(body:, status:, message:)
     success = [200, 201].include? status
     render json: {
-      message: success ? message : 'failed',
+      message: success ? 'success' : message,
       status: status,
       data:  body,
     }, status: status
@@ -21,14 +21,14 @@ class ApplicationController < ActionController::API
     app_response(body: body, status: 404, message: message)
   end
 
+  def invalid_record(data)
+    app_response(body: { errors: data.errors }, status: 403, message: 'Invalid data')
+  end
+
   private
 
   def record_missing(e)
     not_found(body: e, message: 'Record not found')
-  end
-
-  def invalid_record(e)
-    app_response(body: e, status: 403, message: 'Invalid data')
   end
 
 end

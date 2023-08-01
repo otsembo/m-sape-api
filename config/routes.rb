@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   # auth
   post "/auth/create_account", to: 'auth#register'
+  post "/auth/login", to: 'auth#login'
 
 end

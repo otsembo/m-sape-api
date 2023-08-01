@@ -2,9 +2,8 @@
 
 class UserRepo
 
-  def login(email:, password:)
-    user = User.find_by(email: email)
-    user ? user.id : nil
+  def login(user:, password:)
+    user.authenticate(password)
   end
 
   def create_account(email:, password:, phone:)
