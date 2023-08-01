@@ -8,7 +8,7 @@ class UserRepo
   end
 
   def create_account(email:, password:, phone:)
-    User.create(email: email, password: password, phone: phone)
+    User.create(email: email, password: password, phone: phone, last_login: Time.now)
   end
 
   def delete_user(uid:)
