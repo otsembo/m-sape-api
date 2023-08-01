@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   # account
   post "/account/view", to: 'account#index'
 
+  match '*unmatched', to: 'application#missing_route', via: [:patch, :put, :get, :post, :delete]
 
 end

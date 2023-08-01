@@ -3,6 +3,7 @@ require_relative '../../lib/auth/m_sape'
 class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_missing
   rescue_from JWT::DecodeError, JWT::ExpiredSignature, JWT::EncodeError, with: :jwt_error
+  rescue_from ActionController::RoutingError, with: :missing_page
 
   def initialize
     @auth = Authentication.new
@@ -10,6 +11,10 @@ class ApplicationController < ActionController::API
 
   def home
     app_response(body: 'Welcome to m-sape', status: 200, message: 'success' )
+  end
+
+  def missing_route
+    app_response(body: 'Missing route', status: 404, message: 'You seem lost')
   end
 
   # app constants
@@ -49,6 +54,11 @@ class ApplicationController < ActionController::API
 
   def jwt_error(e)
     app_response(body: e, message: 'Authorization error', status: 403)
+  end
+
+  def missing_page(e)
+    pp { :hello => "world" }
+    app_response(body: e, message: 'you seem lost', status: 404)
   end
 
 end
