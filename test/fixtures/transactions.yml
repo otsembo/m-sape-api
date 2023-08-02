@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  party_a: one
+  party_b: one
+  transfer_date: 2023-08-02
+  amount: 1.5
+  type: 1
+
+two:
+  party_a: two
+  party_b: two
+  transfer_date: 2023-08-02
+  amount: 1.5
+  type: 1

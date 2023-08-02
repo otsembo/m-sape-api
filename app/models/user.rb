@@ -6,6 +6,7 @@ class User < ApplicationRecord
   validate  :email_validity_check
 
   has_one :money_account
+  has_many :transactions
 
   private
 
