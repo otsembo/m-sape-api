@@ -77,14 +77,15 @@ test:
 # the values provided in this file. Alternatively, you can specify a connection
 # URL environment variable explicitly:
 #
-#   production:
-#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
 #
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
-  <<: *default
-  database: m_sape_api_production
-  username: m_sape_api
-  password: <%= ENV["M_SAPE_API_DATABASE_PASSWORD"] %>
+#production:
+#  <<: *default
+#  database: m_sape_api_production
+#  username: m_sape_api
+#  password: <%#= ENV["M_SAPE_API_DATABASE_PASSWORD"] %>
