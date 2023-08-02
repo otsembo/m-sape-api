@@ -39,11 +39,16 @@ class ApplicationController < ActionController::API
   def auth_request
     headers = request.headers['Authorization']
     token = headers ? headers.split(' ').last : nil
+    @auth = Authentication.new
     unless token && @auth.jwt_decode(token: token)
       app_response(body: { errors: ['You are not authorized to view this page. Check your authorization header and try again'] },
                    status: 403,
                    message: 'failed')
     end
+  end
+
+  def uid
+    @auth.jwt_decode(token: request.headers['Authorization'].split(' ').last)[0]["data"]["uid"].to_i
   end
 
   private

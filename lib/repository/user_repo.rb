@@ -16,4 +16,8 @@ class UserRepo
   def search_user(email:)
     User.find_by(email: email)
   end
+
+  def find_user(uid:)
+    User.find(uid)
+  end
 end
