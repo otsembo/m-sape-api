@@ -18,6 +18,9 @@ gem "puma", "~> 5.0"
 # Use JWT for authentication
 gem "jwt"
 
+# Use ActiveModel Serializer for serialization [https://github.com/rails/]
+gem "active_model_serializers"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

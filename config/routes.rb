@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   post "/account/view", to: 'account#index'
   post "/account/topup", to: 'account#topup'
   post "/account/withdraw", to: 'account#withdraw'
+  post "/account/transfer", to: 'account#transfer'
+  get "/account/transactions/:type", to: 'account#transactions'
+
+  # transaction
 
   match '*unmatched', to: 'application#missing_route', via: [:patch, :put, :get, :post, :delete]
 

@@ -16,4 +16,10 @@ class TransactionRepo
               )
   end
 
+  def view_transactions(uid:, type:)
+    @user_repo.find_user(uid: uid)
+             .transactions.where(transaction_type: type).order(:created_at).last(5)
+              .map { |t| ActiveModelSerializers::SerializableResource.new(t, serializer: TransactionSerializer) }
+  end
+
 end
